@@ -8,3 +8,24 @@ docker exec -it <con_id> bash
 
 curl localhost:8080/health
 {"app":"OK","mongo":true}
+
+after build images 
+order of components 
+
+docker run -d --name mongodb --network ecom mongodb:v1
+docker run -d --name catalogue --network ecom catalogue:v1
+
+docker run -d --name redis --network ecom redis:7
+docker run -d --name user --network ecom user:v1
+docker run -d --name cart --network ecom cart:v1
+
+docker run -d --name mysql --network ecom mysql:v1
+docker run -d --name shipping --network ecom shipping:v1
+
+docker run -d --name rabbitmq --network ecom -e RABBITMQ_DEFAULT_USER=roboshop -e RABBITMQ_DEFAULT_PASS=roboshop123 rabbitmq:3
+docker run -d --name payment --network ecom payment:v1
+
+docker run -d --name frontend -p 80:80 --network ecom frontend:v1
+
+
+
