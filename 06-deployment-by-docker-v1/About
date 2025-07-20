@@ -1,0 +1,5 @@
+primary priority to communication between components 
+next version: 
+    - docker-compose
+    - docker-images size optimization 
+    - docker-best practices
