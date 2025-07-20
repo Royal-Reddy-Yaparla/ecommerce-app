@@ -1,6 +1,6 @@
 - we pull and run directly
   ```
-    docker run -d --name redis redis:7
+    docker run -d --name redis --network ecom redis:7
   ```
 
 
