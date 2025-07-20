@@ -3,6 +3,10 @@ resource "aws_instance" "my_instance" {
   instance_type          = var.instance_type
   vpc_security_group_ids = [aws_security_group.allow_all.id]
 
+  root_block_device{
+    volume_size = 30
+  }
+
   tags = merge( # to merge maps
     var.common_tags,
     {
@@ -29,16 +33,14 @@ resource "terraform_data" "main" {
       "sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin",
       "sudo systemctl start docker",
       "sudo systemctl enable docker",
-      "sudo usermod -aG docker ec2-user"
+      "sudo usermod -aG docker ec2-user",
+      "sudo growpart /dev/nvme0n1 4",
+      "sudo vgdisplay RootVG",
+      "sudo lvextend -L +10G /dev/RootVG/varVol",
+      "sudo xfs_growfs /var"
     ]
   }
 }
-
-# resource "aws_ec2_instance_state" "main" {
-#   instance_id = aws_instance.my_instance.id
-#   depends_on  = [terraform_data.main]
-#   state       = "running" #stopped/running
-# }
 
 
 resource "aws_security_group" "allow_all" {

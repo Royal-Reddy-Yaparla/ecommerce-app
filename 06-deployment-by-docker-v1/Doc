@@ -1,0 +1,10 @@
+docker network
+docker network ls
+docker network create ecom
+
+docker network connect ecom <component>
+
+docker exec -it <con_id> bash 
+
+curl localhost:8080/health
+{"app":"OK","mongo":true}
