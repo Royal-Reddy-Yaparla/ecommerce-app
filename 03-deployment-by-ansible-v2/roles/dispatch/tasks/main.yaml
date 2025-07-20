@@ -1,0 +1,14 @@
+  - name: application set-up
+    include_role:
+      name: common
+      tasks_from: app-setup.yaml
+
+  - name: install golang 
+    include_role:
+      name: common
+      tasks_from: golang-setup.yaml
+
+  - name: start dispatch service
+    include_role:
+      name: common
+      tasks_from: systemd-service.yaml

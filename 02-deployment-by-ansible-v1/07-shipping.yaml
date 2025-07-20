@@ -1,0 +1,120 @@
+- name: shipping component configuration
+  hosts: shipping
+  become: true 
+  vars_prompt:
+    - name: mysql_password
+      prompt: Enter root_password 
+  tasks:
+  - name: install maven 
+    ansible.builtin.package:
+      name: maven 
+      state: present  
+  
+  - name: Install PyMySQL.
+    ansible.builtin.pip:
+      name: "{{ item }}"
+      executable: pip3.9
+    loop:
+    - cryptography
+    - PyMySQL
+    tags:
+    - import
+    
+  - name: create a directory if it does not exist
+    ansible.builtin.file:
+      path: /app
+      state: directory
+
+  - name: add the system user 'roboshop'
+    ansible.builtin.user:
+      name: roboshop
+      system: true # makes the user a system account.
+      home : /app
+      shell: /sbin/nologin
+
+  - name: download application code
+    ansible.builtin.get_url:
+      url: https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip 
+      dest: /tmp/shipping.zip
+    
+  - name: extract application code /tmp/shipping.zip
+    ansible.builtin.unarchive:
+      src: /tmp/shipping.zip
+      dest: /app/
+      remote_src: true
+  
+  - name: download the dependencies & build the application  
+    ansible.builtin.command: "mvn clean package"
+    args:
+      chdir: /app
+
+  - name: rename jar file
+    ansible.builtin.command: mv target/shipping-1.0.jar shipping.jar
+    args:
+      chdir: /app
+
+  - name: copy service file to /etc/systemd/system/
+    ansible.builtin.copy:
+      src: shipping.service
+      dest: /etc/systemd/system/shipping.service
+      
+
+  - name: load the service
+    ansible.builtin.systemd_service:
+      daemon_reload: true
+
+  - name: start service shipping, if not started
+    ansible.builtin.service:
+      name: shipping
+      state: started
+      enabled: true
+
+  - name: install mysql 
+    ansible.builtin.package:
+      name: mysql 
+      state: present
+
+  # check data is loaded or not 
+  # - name: check data is loaded or not
+  #   ansible.builtin.command:  mysql -h mysql.royalreddy.site -uroot -p{{mysql_password}} -sN -e "SELECT COUNT(*) FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'cities'"
+  #   register: data_output
+  #   tags:
+  #   - import
+
+  # - name: print data output
+  #   ansible.builtin.debug:
+  #     msg: "{{ data_output }}"
+  #   tags:
+  #   - import
+
+
+  # - name: check connection between mysql and app user (Shipping)
+  #   community.mysql.mysql_info:
+  #     login_user: shipping
+  #     login_password: "{{ mysql_password }}"
+  #     login_host : mysql.royalreddy.site
+  #     login_db: cities
+  #   # tags:
+  #   # - mysql
+
+  - name: import the master data
+    community.mysql.mysql_db:
+      login_user: root
+      login_password: "{{ mysql_password }}"
+      login_host : mysql.royalreddy.site
+      name: all
+      state: import
+      target: "{{ item }}"
+    loop:
+    - /app/db/schema.sql
+    - /app/db/app-user.sql 
+    - /app/db/master-data.sql
+    tags:
+    - import
+
+  - name: start service shipping, if not started
+    ansible.builtin.service:
+      name: shipping
+      state: restarted
+    tags:
+    - import
