@@ -1,4 +1,3 @@
-docker-compose, volumes, depends and envs implemented
 next version: 
     - docker-images size optimization 
     - docker-best practices
