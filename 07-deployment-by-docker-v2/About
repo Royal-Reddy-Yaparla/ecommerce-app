@@ -1,3 +1,4 @@
 next version: 
     - docker-images size optimization 
     - docker-best practices
+    - push to dockerhub
