@@ -19,7 +19,9 @@ docker build -t iamroyalreddy/ecom-payment:v2 .;docker push iamroyalreddy/ecom-p
 docker build -t iamroyalreddy/ecom-frontend:v2 .;docker push iamroyalreddy/ecom-frontend:v2
 
 # run containers
-docker compose up
+docker compose up -d
+docker compose down
+
 
 
 # docker network create ecom
