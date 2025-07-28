@@ -1,2 +1,45 @@
 
-docker login -u username 
+docker login -u username iamroyalreddy
+
+# build and push
+docker build -t iamroyalreddy/ecom-mongodb:v1 .
+docker push iamroyalreddy/ecom-mongodb:v1
+
+docker build -t iamroyalreddy/ecom-catalogue:v1 .
+docker push iamroyalreddy/ecom-catalogue:v1
+
+docker build -t iamroyalreddy/ecom-cart:v1 .
+docker push iamroyalreddy/ecom-cart:v1
+
+docker build -t iamroyalreddy/ecom-user:v1 .
+docker push iamroyalreddy/ecom-user:v1
+
+docker build -t iamroyalreddy/ecom-mysql:v1 .
+docker push iamroyalreddy/ecom-mysql:v1
+
+docker build -t iamroyalreddy/ecom-shipping:v1 .
+docker push iamroyalreddy/ecom-shipping:v1
+
+docker build -t iamroyalreddy/ecom-payment:v1 .
+docker push iamroyalreddy/ecom-payment:v1
+
+docker build -t iamroyalreddy/ecom-frontend:v1 .
+docker push iamroyalreddy/ecom-frontend:v1
+
+# run containers
+docker network create ecom
+docker run -d --name mongodb --network ecom iamroyalreddy/ecom-mongodb:v1
+docker run -d --name catalogue --network ecom iamroyalreddy/ecom-catalogue:v1
+
+docker run -d --name redis --network ecom redis:7
+docker run -d --name user --network ecom iamroyalreddy/ecom-user:v1
+docker run -d --name cart --network ecom iamroyalreddy/ecom-cart:v1
+
+docker run -d --name mysql --network ecom iamroyalreddy/ecom-mysql:v1
+docker run -d --name shipping --network ecom iamroyalreddy/ecom-shipping:v1
+
+docker run -d --name rabbitmq --network ecom -e RABBITMQ_DEFAULT_USER=roboshop -e RABBITMQ_DEFAULT_PASS=roboshop123 rabbitmq:3
+docker run -d --name payment --network ecom iamroyalreddy/ecom-payment:v1
+
+docker run -d --name frontend -p 80:80 --network ecom iamroyalreddy/ecom-frontend:v1
+
