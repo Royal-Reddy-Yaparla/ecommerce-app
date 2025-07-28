@@ -2,29 +2,21 @@
 docker login -u username iamroyalreddy
 
 # build and push
-docker build -t iamroyalreddy/ecom-mongodb:v2 .
-docker push iamroyalreddy/ecom-mongodb:v2
+docker build -t iamroyalreddy/ecom-mongodb:v2 .;docker push iamroyalreddy/ecom-mongodb:v2
 
-docker build -t iamroyalreddy/ecom-catalogue:v2 .
-docker push iamroyalreddy/ecom-catalogue:v2
+docker build -t iamroyalreddy/ecom-catalogue:v2 .;docker push iamroyalreddy/ecom-catalogue:v2
 
-docker build -t iamroyalreddy/ecom-cart:v2 .
-docker push iamroyalreddy/ecom-cart:v2
+docker build -t iamroyalreddy/ecom-cart:v2 .;docker push iamroyalreddy/ecom-cart:v2
 
-docker build -t iamroyalreddy/ecom-user:v2 .
-docker push iamroyalreddy/ecom-user:v2
+docker build -t iamroyalreddy/ecom-user:v2 .;docker push iamroyalreddy/ecom-user:v2
 
-docker build -t iamroyalreddy/ecom-mysql:v2 .
-docker push iamroyalreddy/ecom-mysql:v2
+docker build -t iamroyalreddy/ecom-mysql:v2 .;docker push iamroyalreddy/ecom-mysql:v2
 
-docker build -t iamroyalreddy/ecom-shipping:v2 .
-docker push iamroyalreddy/ecom-shipping:v2
+docker build -t iamroyalreddy/ecom-shipping:v2 .;docker push iamroyalreddy/ecom-shipping:v2
 
-docker build -t iamroyalreddy/ecom-payment:v2 .
-docker push iamroyalreddy/ecom-payment:v2
+docker build -t iamroyalreddy/ecom-payment:v2 .;docker push iamroyalreddy/ecom-payment:v2
 
-docker build -t iamroyalreddy/ecom-frontend:v2 .
-docker push iamroyalreddy/ecom-frontend:v2
+docker build -t iamroyalreddy/ecom-frontend:v2 .;docker push iamroyalreddy/ecom-frontend:v2
 
 # run containers
 docker compose up
