@@ -26,7 +26,7 @@ services:
     image: redis:7
     container_name: redis
     volumes:
-    - redis: /data
+    - redis:/data
   user:
     image: iamroyalreddy/ecom-user:v2
     container_name: user
@@ -51,7 +51,7 @@ services:
     image: iamroyalreddy/ecom-mysql:v2
     container_name: mysql
     volumes:
-    - mysql: /var/lib/mysql # refer image doc
+    - mysql:/var/lib/mysql # refer image doc
   shipping:
     image: iamroyalreddy/ecom-shipping:v2
     container_name: shipping
