@@ -96,7 +96,7 @@ spec:
     spec: 
       containers: 
       - name: frontend
-        image: iamroyalreddy/ecom-frontend:v2
+        image: joindevops/frontend:v1
         imagePullPolicy: Always
         volumeMounts:
         - name: nginx-conf
