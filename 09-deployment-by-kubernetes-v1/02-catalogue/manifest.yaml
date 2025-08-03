@@ -1,3 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: catalogue
+  namespace: ecom
+data:
+  MONGO: "true"
+  MONGO_URL: mongodb://mongodb:27017/catalogue
+---
 apiVersion: apps/v1
 kind: Deployment 
 metadata: 
@@ -6,25 +15,28 @@ metadata:
   labels: 
     name: catalogue
     project: ecomApp
-    tier: db
+    tier: app
 spec: 
   replicas: 1
   selector:
     matchLabels: 
       name: catalogue
       project: ecomapp
-      tier: db
+      tier: app
   template:
     metadata:
       labels:
         name: catalogue
         project: ecomapp
-        tier: db
+        tier: app
     spec: 
       containers: 
       - name: catalogue
         image: iamroyalreddy/ecom-catalogue:v2
         imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: catalogue
 ---
 apiVersion: v1 
 kind: Service
@@ -34,12 +46,12 @@ metadata:
   labels:
     name: catalogue
     project: ecomapp
-    tier: db
+    tier: app
 spec:
   selector:
     name: catalogue
     project: ecomapp
-    tier: db
+    tier: app
   ports:
-  - port: 27017
-    targetPort: 27017
+  - port: 8080
+    targetPort: 8080
