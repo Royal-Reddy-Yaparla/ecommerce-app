@@ -15,12 +15,12 @@ spec:
       project: ecomapp
       tier: db
   template:
-      metadata:
-        labels:
-          name: mongodb
-          project: ecomapp
-          tier: db
-      spec: 
+    metadata:
+      labels:
+        name: mongodb
+        project: ecomapp
+        tier: db
+    spec: 
       containers: 
       - name: mongodb
         image: iamroyalreddy/ecom-mongodb:v2
