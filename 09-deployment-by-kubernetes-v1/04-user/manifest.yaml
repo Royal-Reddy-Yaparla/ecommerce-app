@@ -1,55 +1,56 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: catalogue
+  name: user
   namespace: ecom
 data:
   MONGO: "true"
-  MONGO_URL: mongodb://mongodb:27017/catalogue
+  MONGO_URL: mongodb://mongodb:27017/user
+  REDIS_URL: redis://redis:6379
 ---
 apiVersion: apps/v1
 kind: Deployment 
 metadata: 
-  name: catalogue
+  name: user
   namespace: ecom
   labels: 
-    name: catalogue
+    name: user
     project: ecomApp
     tier: app
 spec: 
   replicas: 1
   selector:
     matchLabels: 
-      name: catalogue
+      name: user
       project: ecomapp
       tier: app
   template:
     metadata:
       labels:
-        name: catalogue
+        name: user
         project: ecomapp
         tier: app
     spec: 
       containers: 
-      - name: catalogue
-        image: iamroyalreddy/ecom-catalogue:v2
+      - name: user
+        image: iamroyalreddy/ecom-user:v2
         imagePullPolicy: Always
         envFrom:
         - configMapRef:
-            name: catalogue
+            name: user
 ---
 apiVersion: v1 
 kind: Service
 metadata:
-  name: catalogue
+  name: user
   namespace: ecom
   labels:
-    name: catalogue
+    name: user
     project: ecomapp
     tier: app
 spec:
   selector:
-    name: catalogue
+    name: user
     project: ecomapp
     tier: app
   ports:
