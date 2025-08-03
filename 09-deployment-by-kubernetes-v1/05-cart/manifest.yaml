@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cart
+  namespace: ecom
+data:
+    REDIS_HOST: redis  
+    CATALOGUE_HOST: catalogue 
+    CATALOGUE_PORT: "8080" 
+---
+apiVersion: apps/v1
+kind: Deployment 
+metadata: 
+  name: cart
+  namespace: ecom
+  labels: 
+    name: cart
+    project: ecomApp
+    tier: app
+spec: 
+  replicas: 1
+  selector:
+    matchLabels: 
+      name: cart
+      project: ecomapp
+      tier: app
+  template:
+    metadata:
+      labels:
+        name: cart
+        project: ecomapp
+        tier: app
+    spec: 
+      containers: 
+      - name: cart
+        image: iamroyalreddy/ecom-cart:v2
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: cart
+---
+apiVersion: v1 
+kind: Service
+metadata:
+  name: cart
+  namespace: ecom
+  labels:
+    name: cart
+    project: ecomapp
+    tier: app
+spec:
+  selector:
+    name: cart
+    project: ecomapp
+    tier: app
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
