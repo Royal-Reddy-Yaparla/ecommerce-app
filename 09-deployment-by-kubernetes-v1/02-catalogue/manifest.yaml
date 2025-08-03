@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata: 
+  name: catalogue
+  namespace: ecom
+  labels: 
+    name: catalogue
+    project: ecomApp
+    tier: db
+spec: 
+  replicas: 1
+  selector:
+    matchLabels: 
+      name: catalogue
+      project: ecomapp
+      tier: db
+  template:
+    metadata:
+      labels:
+        name: catalogue
+        project: ecomapp
+        tier: db
+    spec: 
+      containers: 
+      - name: catalogue
+        image: iamroyalreddy/ecom-catalogue:v2
+        imagePullPolicy: Always
+---
+apiVersion: v1 
+kind: Service
+metadata:
+  name: catalogue
+  namespace: ecom
+  labels:
+    name: catalogue
+    project: ecomapp
+    tier: db
+spec:
+  selector:
+    name: catalogue
+    project: ecomapp
+    tier: db
+  ports:
+  - port: 27017
+    targetPort: 27017
