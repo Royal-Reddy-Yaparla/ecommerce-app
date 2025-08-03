@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata: 
+  name: mongodb
+  namespace: ecom
+  labels: 
+    name: mongodb
+    project: ecomApp
+    tier: db
+spec: 
+  replicas: 1
+  selector:
+    matchLabels: 
+      name: mongodb
+      project: ecomapp
+      tier: db
+  template:
+      metadata:
+        labels:
+          name: mongodb
+          project: ecomapp
+          tier: db
+      spec: 
+      containers: 
+        - name: mongodb
+          image: iamroyalreddy/ecom-mongodb:v2
+---
+apiVersion: v1 
+kind: Service
+metadata:
+  name: mongodb
+  namespace: ecom
+  labels:
+    name: mongodb
+    project: ecomapp
+    tier: db
+spec:
+  selector:
+    name: mongodb
+    project: ecomapp
+    tier: db
+  ports:
+  - port: 27017
+    targetPort: 27017
