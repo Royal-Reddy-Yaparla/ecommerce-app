@@ -22,8 +22,9 @@ spec:
           tier: db
       spec: 
       containers: 
-        - name: mongodb
-          image: iamroyalreddy/ecom-mongodb:v2
+      - name: mongodb
+        image: iamroyalreddy/ecom-mongodb:v2
+        imagePullPolicy: Always
 ---
 apiVersion: v1 
 kind: Service
