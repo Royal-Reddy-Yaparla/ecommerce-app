@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata: 
+  name: mysql
+  namespace: ecom
+  labels: 
+    name: mysql
+    project: ecomApp
+    tier: db
+spec: 
+  replicas: 1
+  selector:
+    matchLabels: 
+      name: mysql
+      project: ecomapp
+      tier: db
+  template:
+    metadata:
+      labels:
+        name: mysql
+        project: ecomapp
+        tier: db
+    spec: 
+      containers: 
+      - name: mysql
+        image: iamroyalreddy/ecom-mysql:v2
+        imagePullPolicy: Always
+---
+apiVersion: v1 
+kind: Service
+metadata:
+  name: mysql
+  namespace: ecom
+  labels:
+    name: mysql
+    project: ecomapp
+    tier: db
+spec:
+  selector:
+    name: mysql
+    project: ecomapp
+    tier: db
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
