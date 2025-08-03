@@ -34,7 +34,7 @@ data:
         include /etc/nginx/conf.d/*.conf;
 
         server {
-            listen       80;
+            listen       8080;
             listen       [::]:80;
             server_name  _;
             root         /usr/share/nginx/html;
@@ -64,7 +64,6 @@ data:
               stub_status on;
               access_log off;
             }
-
         }
     }
 
@@ -96,9 +95,18 @@ spec:
       - name: frontend
         image: iamroyalreddy/ecom-frontend:v2
         imagePullPolicy: Always
-        envFrom:
-        - configMapRef:
-            name: frontend
+        volumeMounts:
+        - name: nginx-conf
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+          readOnly: true
+    volumes:
+      - name: nginx-conf
+        configMap:
+          name: nginx-conf
+          items:
+          - key: nginx-conf
+            path: nginx-conf
 ---
 apiVersion: v1 
 kind: Service
@@ -110,11 +118,12 @@ metadata:
     project: ecomapp
     tier: app
 spec:
+  type: LoadBalancer
   selector:
     name: frontend
     project: ecomapp
     tier: app
   ports:
   - protocol: TCP
-    port: 8080
+    port: 80
     targetPort: 8080
