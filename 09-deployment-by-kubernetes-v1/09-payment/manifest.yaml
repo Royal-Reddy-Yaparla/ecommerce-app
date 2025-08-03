@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: payment
+  namespace: ecom
+data:
+  CART_HOST: cart 
+  CART_PORT: "8080" 
+  USER_HOST: user 
+  USER_PORT: "8080"
+  AMQP_HOST: rabbitmq 
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: payment
+  namespace: ecom
+type: Opaque
+data: 
+  AMQP_USER: cm9ib3Nob3A= 
+  AMQP_PASS: cm9ib3Nob3AxMjM= 
+---
+apiVersion: apps/v1
+kind: Deployment 
+metadata: 
+  name: payment
+  namespace: ecom
+  labels: 
+    name: payment
+    project: ecomApp
+    tier: app
+spec: 
+  replicas: 1
+  selector:
+    matchLabels: 
+      name: payment
+      project: ecomapp
+      tier: app
+  template:
+    metadata:
+      labels:
+        name: payment
+        project: ecomapp
+        tier: app
+    spec: 
+      containers: 
+      - name: payment
+        image: iamroyalreddy/ecom-payment:v2
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: payment
+        - secretRef:
+            name: payment
+---
+apiVersion: v1 
+kind: Service
+metadata:
+  name: payment
+  namespace: ecom
+  labels:
+    name: payment
+    project: ecomapp
+    tier: app
+spec:
+  selector:
+    name: payment
+    project: ecomapp
+    tier: app
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
