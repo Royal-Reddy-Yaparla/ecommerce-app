@@ -38,3 +38,4 @@ sudo mv /tmp/eksctl /usr/local/bin
 
 # k9s
 curl -sS https://webinstall.dev/k9s | bash
+

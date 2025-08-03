@@ -15,7 +15,7 @@ metadata:
   namespace: ecom
   labels: 
     name: cart
-    project: ecomApp
+    project: ecomapp
     tier: app
 spec: 
   replicas: 1

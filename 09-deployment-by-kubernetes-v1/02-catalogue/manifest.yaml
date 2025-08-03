@@ -5,7 +5,7 @@ metadata:
   namespace: ecom
 data:
   MONGO: "true"
-  MONGO_URL: mongodb://mongodb:27017/catalogue
+  MONGO_URL: "mongodb://mongodb:27017/catalogue"
 ---
 apiVersion: apps/v1
 kind: Deployment 
@@ -14,7 +14,7 @@ metadata:
   namespace: ecom
   labels: 
     name: catalogue
-    project: ecomApp
+    project: ecomapp
     tier: app
 spec: 
   replicas: 1

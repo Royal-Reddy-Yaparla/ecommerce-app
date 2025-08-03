@@ -5,7 +5,7 @@ metadata:
   namespace: ecom
   labels: 
     name: frontend
-    project: ecomApp
+    project: ecomapp
     tier: app
 data:
   nginx.conf: |
@@ -78,7 +78,7 @@ metadata:
   namespace: ecom
   labels: 
     name: frontend
-    project: ecomApp
+    project: ecomapp
     tier: app
 spec: 
   replicas: 1

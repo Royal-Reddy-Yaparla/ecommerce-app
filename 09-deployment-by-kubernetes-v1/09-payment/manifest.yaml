@@ -4,11 +4,11 @@ metadata:
   name: payment
   namespace: ecom
 data:
-  CART_HOST: cart 
+  CART_HOST: "cart" 
   CART_PORT: "8080" 
-  USER_HOST: user 
+  USER_HOST: "user" 
   USER_PORT: "8080"
-  AMQP_HOST: rabbitmq 
+  AMQP_HOST: "rabbitmq" 
 ---
 apiVersion: v1
 kind: Secret
@@ -17,8 +17,8 @@ metadata:
   namespace: ecom
 type: Opaque
 data: 
-  AMQP_USER: cm9ib3Nob3A= 
-  AMQP_PASS: cm9ib3Nob3AxMjM= 
+  AMQP_USER: "cm9ib3Nob3A=" 
+  AMQP_PASS: "cm9ib3Nob3AxMjM=" 
 ---
 apiVersion: apps/v1
 kind: Deployment 
@@ -27,7 +27,7 @@ metadata:
   namespace: ecom
   labels: 
     name: payment
-    project: ecomApp
+    project: ecomapp
     tier: app
 spec: 
   replicas: 1
