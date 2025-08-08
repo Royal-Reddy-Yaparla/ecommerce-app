@@ -18,7 +18,6 @@ variable "security_group_ids" {
 
 variable "subnet_id" {
   type    = string
-
 }
 
 variable "project" {
